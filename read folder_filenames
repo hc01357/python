@@ -1,0 +1,53 @@
+# -*- coding:utf-8 -*-
+###(1)os.path方法
+###通过传入需要遍历的目录，列出目录下的所有文件并统计文件数，os提供的path模块能对目录非常灵活的操作。
+
+import os,sys
+def listdir(dir,file):
+    file.write(dir + '\n')
+    fielnum = 0
+    list = os.listdir(dir) #列出目录下的所有文件和目录
+    for line in list:
+        filepath = os.path.join(dir,line)
+        if os.path.isdir(filepath): #如果filepath是目录，则再列出该目录下的所有文件
+            file.write('  ' + line + '\\'+'\n')
+            for li in os.listdir(filepath):
+                print(os.path.join(li))
+                file.write('   '+li + '\n')
+                fielnum = fielnum + 1
+        elif os.path:  #如果filepath是文件，直接列出文件名
+            print(os.path.join(line))
+            file.write('  '+line + '\n') 
+            fielnum = fielnum + 1
+    file.write('all the file num is '+ str(fielnum))
+    file.close()
+if __name__ == '__main__':
+    dir = raw_input('please input the path:')
+    myfile = open('list3.txt','w')
+    listdir(dir,myfile)
+
+
+###(2)os.walk方法
+###os模块提供的walk方法很强大，能够把给定的目录下的所有目录和文件遍历出来。
+###方法：os.walk(path),遍历path，返回一个对象，他的每个部分都是一个三元组,('目录x'，[目录x下的目录list]，目录x下面的文件)
+ 
+import os
+def walk_dir(dir,fileinfo,topdown=True):
+	 fielnum = 0
+	 for root, dirs, files in os.walk(dir, topdown):  #topdown决定遍历的顺序，如果topdown为True，则先列举top下的目录，然后是目录的目录，反之，则先递归列举出最深层的子目录，然后是其兄弟目录，然后子目录。
+		 for name in files:
+		     print(os.path.join(name))
+		     fileinfo.write(os.path.join(root,name) + '\n')
+		     fielnum = fielnum + 1
+		 for name in dirs:
+		     print(os.path.join(name))
+		     fileinfo.write(' ' + os.path.join(root,name) + '\n')
+		     fielnum = fielnum + 1
+	 fileinfo.write('all the file num is '+ str(fielnum))
+	 fileinfo.close()
+dir = raw_input('please input the path:')
+fileinfo = open('list2.txt','w')
+walk_dir(dir,fileinfo)
+
+
+ 
