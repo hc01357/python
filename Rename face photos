@@ -1,0 +1,30 @@
+# -*- coding: utf-8 -*-
+import os
+import glob
+
+def makeDic(txt_path):
+    all_dic = {}
+    with open(txt_path,encoding='utf8') as fp:
+        for line in fp:
+            li = line.split('\t')
+            all_dic[li[0].split(':')[1].split('.')[0]] = li[1].split('.')[0]
+    return all_dic
+
+def picRename(dir_path,txt_path):
+    all_dic = makeDic(txt_path)
+    for d_path in glob.iglob(dir_path):
+        #for p_path in glob.iglob(d_path+'\\*'):
+        for p_path in glob.iglob(d_path+'\\*\\*'):   
+            p_name = os.path.basename(p_path)
+            name = p_name.split('.')[0]
+            last_name = p_name.split('.')[1]
+            if last_name == 'txt':
+                pass
+            else:
+                if len(name.split('_')) != 1:
+                    pass
+                else:
+                    os.rename(p_path, p_path.replace(p_name, all_dic.get(name)+'.'+last_name))
+
+if __name__ == "__main__":
+    picRename(r'C:\Users\Administrator\Desktop\1000人脸照片', r'C:\Users\Administrator\Desktop\程序\对应表.txt')
